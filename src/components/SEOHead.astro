@@ -1,0 +1,61 @@
+---
+export interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+}
+
+const {
+  title = "Microfiber Stock Clearance - Factory Direct Pricing | Kids Kreations Co., Ltd.",
+  description = "Factory-direct microfiber products at special bulk pricing. Over 1 million units ready for immediate shipment. Cleaning cloths, wash mitts, and automotive accessories from Thailand manufacturer.",
+  canonical = Astro.url.href,
+  ogImage = "/images/og-microfiber-clearance.jpg"
+} = Astro.props;
+
+const siteName = "Kids Kreations Co., Ltd.";
+---
+
+<!-- Primary Meta Tags -->
+<title>{title}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="keywords" content="microfiber, cleaning cloths, wash mitts, factory direct, bulk pricing, Thailand manufacturer, automotive accessories, clearance stock, wholesale microfiber" />
+<meta name="robots" content="index, follow" />
+<meta name="language" content="English" />
+<meta name="author" content="Kids Kreations Co., Ltd." />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonical} />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content="en_US" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={canonical} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={ogImage} />
+
+<!-- Additional SEO Meta Tags -->
+<meta name="geo.region" content="TH" />
+<meta name="geo.placename" content="Bangkok" />
+<meta name="geo.position" content="13.7563;100.5018" />
+<meta name="ICBM" content="13.7563, 100.5018" />
+
+<!-- Business/Contact Info -->
+<meta name="contact" content="lilsoft@kidskreationsco.com" />
+<meta name="coverage" content="Worldwide" />
+<meta name="distribution" content="Global" />
+<meta name="target" content="B2B, Wholesale, Retail" />
+
+<!-- Preconnect for performance -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

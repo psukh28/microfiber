@@ -1,0 +1,105 @@
+[
+  {
+    "sku": null,
+    "name": "Super Soft Microfiber Cloth",
+    "summary": "Streak-free microfiber cloth for glass, mirrors, and delicate surfaces. Reusable and fast-drying.",
+    "size": "16\" X 24\"\n(40 X 60 cm)",
+    "fabric": "100% Polyester",
+    "gsm": 200.0,
+    "colors": [
+      "White"
+    ],
+    "packing": "2 DISPLAY STRIPS × 12 PCS = 24 PCS / CARTON",
+    "carton_dimensions": "34 X 28 X 19 cm",
+    "cbm": 0.015,
+    "unit_price_thb_no_vat": 12.5,
+    "hs_code": null
+  },
+  {
+    "sku": null,
+    "name": "Microfiber Cleaning Towels - 2 PCS SET",
+    "summary": "Dual-color, lint-free towels for detailing, dust, and spills. Durable, washable, and multipurpose.",
+    "size": "14\" X 16\"\n(35.5 X 40.5 cm)",
+    "fabric": "80% Polyester, 20% Polyamide",
+    "gsm": 220.0,
+    "colors": [
+      "Blue",
+      "Green"
+    ],
+    "packing": "30 SETS / CARTON = TOTAL 60 PCS",
+    "carton_dimensions": "34 X 28 X 19 cm",
+    "cbm": 0.018,
+    "unit_price_thb_no_vat": 11.5,
+    "hs_code": null
+  },
+  {
+    "sku": null,
+    "name": "Steering Wheel Cover",
+    "summary": "Microfiber cover with non-slip surface. Universal fit for added grip and protection.",
+    "size": "7.48\" X 7.48\"            (19 X 19 cm)",
+    "fabric": "100% Polyester Velour – Solid/Printed",
+    "gsm": 220.0,
+    "colors": [
+      "Pink",
+      "Black",
+      "Rainbow",
+      "Beige",
+      "Grey"
+    ],
+    "packing": "24 PCS / CARTON",
+    "carton_dimensions": "39 X 20 X 18 cm",
+    "cbm": 0.0125,
+    "unit_price_thb_no_vat": 13.5,
+    "hs_code": null
+  },
+  {
+    "sku": null,
+    "name": "Microfiber Washmitt",
+    "summary": "Dense microfiber traps dirt safely. Paint-safe, scratch-resistant design for efficient hand car washing.",
+    "size": "10\" X 5.75\"      (25.40 X 14.60 cm)",
+    "fabric": "100% Polyester – Chenille Front & Terry Back",
+    "gsm": 655.0,
+    "colors": [
+      "Grey",
+      "Blue",
+      "Green"
+    ],
+    "packing": "3 DISPLAY STRIPS × 12 PCS = 36 PCS / CARTON",
+    "carton_dimensions": "34 X 28 X 19 cm",
+    "cbm": 0.02,
+    "unit_price_thb_no_vat": 15.0,
+    "hs_code": null
+  },
+  {
+    "sku": null,
+    "name": "Antimicrobial Microfiber Cleaning Towels - 2 PCS SET",
+    "summary": "High-absorbency microfiber cloths with built-in antimicrobial agent. Traps dust, dirt, and grime effectively.",
+    "size": "13.75\" x 13.75\"\n(35 x 35 cm)",
+    "fabric": "100% Polyester",
+    "gsm": 195.0,
+    "colors": [
+      "Grey"
+    ],
+    "packing": "24 SETS / CARTON = TOTAL 48 TOWELS",
+    "carton_dimensions": "39.5 X 19 X 24 cm",
+    "cbm": 0.012,
+    "unit_price_thb_no_vat": 13.5,
+    "hs_code": null
+  },
+  {
+    "sku": null,
+    "name": "Handy Shammy Cleaning Towels",
+    "summary": "bsorbent and reusable towel for spills, drying, and general cleaning. Leaves surfaces streak-free.",
+    "size": "13.75\" x 13.75\"\n(35 x 35 cm",
+    "fabric": "100% Polyester",
+    "gsm": null,
+    "colors": [
+      "Yellow"
+    ],
+    "packing": "48 PCS / CARTON",
+    "carton_dimensions": "37 X 34 X 14.5 cm",
+    "cbm": 0.018,
+    "unit_price_thb_no_vat": 11.5,
+    "hs_code": null
+  }
+]
