@@ -1,5 +1,8 @@
 import { validateRFQForm } from '../../utils/validation.js';
 
+// Enable server-side rendering for this API endpoint
+export const prerender = false;
+
 // Email sending function using Resend API
 async function sendRFQEmail(formData) {
   const emailContent = `
@@ -54,8 +57,8 @@ Submitted: ${new Date().toLocaleString()}
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          from: 'RFQ System <noreply@yourdomain.com>',
-          to: ['ps2pranav@gmail.com'],
+          from: 'RFQ System <onboarding@resend.dev>',
+          to: ['pranav@kidskreationsco.com'],
           subject: `New RFQ from ${formData.company} - ${formData.name}`,
           html: htmlContent,
           text: emailContent,
@@ -71,7 +74,7 @@ Submitted: ${new Date().toLocaleString()}
     
     // Fallback: Log to console (for development)
     async () => {
-      console.log('=== EMAIL TO ps2pranav@gmail.com ===');
+      console.log('=== EMAIL TO pranav@kidskreationsco.com ===');
       console.log('Subject: New RFQ from', formData.company, '-', formData.name);
       console.log(emailContent);
       console.log('=== END EMAIL ===');
@@ -95,26 +98,58 @@ Submitted: ${new Date().toLocaleString()}
 
 export async function POST({ request }) {
   try {
-    // Parse request body
-    let formData;
-    const contentType = request.headers.get('content-type');
+    // Debug logging
+    console.log('=== RFQ API DEBUG ===');
+    console.log('Content-Type:', request.headers.get('content-type'));
+    console.log('Method:', request.method);
     
-    if (contentType && contentType.includes('application/json')) {
-      // Handle JSON submission (AJAX)
-      formData = await request.json();
-    } else {
-      // Handle form-data submission (no JavaScript)
-      const data = await request.formData();
-      formData = {
-        company: data.get('company') || '',
-        name: data.get('name') || '',
-        email: data.get('email') || '',
-        phone: data.get('phone') || '',
-        country: data.get('country') || '',
-        products: data.get('products') || '',
-        quantity: data.get('quantity') || '',
-        message: data.get('message') || ''
-      };
+    // Parse request body with error handling
+    let formData;
+    const contentType = request.headers.get('content-type') || '';
+    
+    try {
+      if (contentType.includes('application/json')) {
+        // Handle JSON submission (AJAX)
+        const text = await request.text();
+        if (!text.trim()) {
+          throw new Error('Empty request body');
+        }
+        formData = JSON.parse(text);
+      } else if (contentType.includes('multipart/form-data') || contentType.includes('application/x-www-form-urlencoded')) {
+        // Handle form-data submission (no JavaScript)
+        const data = await request.formData();
+        formData = {
+          company: data.get('company') || '',
+          name: data.get('name') || '',
+          email: data.get('email') || '',
+          phone: data.get('phone') || '',
+          country: data.get('country') || '',
+          products: data.get('products') || '',
+          quantity: data.get('quantity') || '',
+          message: data.get('message') || ''
+        };
+      } else {
+        // Default to JSON parsing for React form submissions
+        const text = await request.text();
+        if (!text.trim()) {
+          throw new Error('Empty request body');
+        }
+        formData = JSON.parse(text);
+      }
+    } catch (parseError) {
+      console.error('Request parsing error:', parseError);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          message: 'Invalid request format'
+        }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
     }
 
     // Validate form data
@@ -137,7 +172,7 @@ export async function POST({ request }) {
     // Send email notification
     try {
       await sendRFQEmail(formData);
-      console.log('RFQ email sent successfully to ps2pranav@gmail.com');
+      console.log('RFQ email sent successfully to pranav@kidskreationsco.com');
     } catch (emailError) {
       console.error('Failed to send RFQ email:', emailError);
       // Continue processing even if email fails
