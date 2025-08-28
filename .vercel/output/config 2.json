@@ -26,6 +26,10 @@
 		{
 			"src": "^/api/test/?$",
 			"dest": "_render"
+		},
+		{
+			"src": "^/$",
+			"dest": "_render"
 		}
 	]
 }

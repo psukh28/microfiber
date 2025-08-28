@@ -47,13 +47,23 @@ export default function RFQForm() {
     }
 
     try {
-      // Submit to API endpoint
-      const response = await fetch('/api/rfq', {
+      // Submit to Formspree (replace YOUR_FORM_ID with actual Formspree form ID)
+      const response = await fetch('https://formspree.io/f/pranav@kidskreationsco.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({
+          email: formData.email,
+          company: formData.company,
+          name: formData.name,
+          phone: formData.phone,
+          country: formData.country,
+          products: formData.products,
+          quantity: formData.quantity,
+          message: formData.message,
+          _subject: `New RFQ from ${formData.company} - ${formData.name}`
+        })
       });
 
       if (response.ok) {
