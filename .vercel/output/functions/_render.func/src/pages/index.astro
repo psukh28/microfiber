@@ -1,0 +1,40 @@
+---
+import MicrofiberClearancePage from '../components/MicrofiberClearancePage.jsx';
+import SEOHead from '../components/SEOHead.astro';
+import StructuredData from '../components/StructuredData.astro';
+import productsData from '../data/microfiber_products.json';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- SEO Meta Tags -->
+		<SEOHead />
+		
+		<!-- Structured Data -->
+		<StructuredData />
+		
+		<!-- Accessibility Styles -->
+		<link rel="stylesheet" href="/src/styles/accessibility.css" />
+		
+		<!-- Dark Mode Script (must run before page renders) -->
+		<script is:inline>
+			// Prevent flash of unstyled content (FOUC) for dark mode
+			(function() {
+				const savedTheme = localStorage.getItem('theme');
+				const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+				
+				if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+					document.documentElement.classList.add('dark');
+				}
+			})();
+		</script>
+	</head>
+	<body>
+		<MicrofiberClearancePage products={productsData} client:load />
+	</body>
+</html>
