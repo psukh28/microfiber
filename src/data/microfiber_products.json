@@ -46,7 +46,7 @@
       "Beige",
       "Grey"
     ],
-    "packing": "24 PCS / CARTON",
+    "packing": "24 PCS per CARTON",
     "carton_dimensions": "39 X 20 X 18 cm",
     "cbm": 0.0125,
     "unit_price_thb_no_vat": 13.5,
@@ -64,7 +64,7 @@
       "Blue",
       "Green"
     ],
-    "packing": "3 DISPLAY STRIPS × 12 PCS = 36 PCS / CARTON",
+    "packing": "3 DISPLAY STRIPS × 12 PCS = 36 PCS per CARTON",
     "carton_dimensions": "34 X 28 X 19 cm",
     "cbm": 0.02,
     "unit_price_thb_no_vat": 15.0,
@@ -80,7 +80,7 @@
     "colors": [
       "Grey"
     ],
-    "packing": "24 SETS / CARTON = TOTAL 48 TOWELS",
+    "packing": "24 SETS per CARTON = TOTAL 48 TOWELS",
     "carton_dimensions": "39.5 X 19 X 24 cm",
     "cbm": 0.012,
     "unit_price_thb_no_vat": 13.5,
@@ -96,7 +96,7 @@
     "colors": [
       "Yellow"
     ],
-    "packing": "48 PCS / CARTON",
+    "packing": "48 PCS per CARTON",
     "carton_dimensions": "37 X 34 X 14.5 cm",
     "cbm": 0.018,
     "unit_price_thb_no_vat": 11.5,
