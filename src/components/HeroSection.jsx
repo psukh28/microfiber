@@ -22,50 +22,7 @@ export default function HeroSection() {
       role="banner"
       aria-labelledby="hero-heading"
     >
-      {/* Microfiber-themed Background Pattern */}
-      <div className="absolute inset-0 opacity-5" aria-hidden="true">
-        <div className="absolute inset-0" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M20 20h40v40H20V20zm10 10v20h20V30H30z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }} />
-      </div>
 
-      {/* Floating microfiber product icons */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
-        {/* Car Wash Mitt */}
-        <div className="absolute top-20 left-10 opacity-15 animate-pulse">
-          <svg className="w-16 h-16 text-white" fill="currentColor" viewBox="0 0 100 100">
-            <path d="M25 30c0-8 6-15 15-15h20c9 0 15 7 15 15v25c0 12-8 20-20 20h-10c-12 0-20-8-20-20V30z"/>
-            <circle cx="35" cy="40" r="2" opacity="0.6"/>
-            <circle cx="45" cy="35" r="2" opacity="0.6"/>
-            <circle cx="55" cy="42" r="2" opacity="0.6"/>
-            <circle cx="40" cy="50" r="2" opacity="0.6"/>
-            <circle cx="50" cy="52" r="2" opacity="0.6"/>
-          </svg>
-        </div>
-        
-        {/* Microfiber Towel */}
-        <div className="absolute top-32 right-16 opacity-15 animate-pulse delay-1000">
-          <svg className="w-14 h-14 text-white" fill="currentColor" viewBox="0 0 100 100">
-            <rect x="20" y="25" width="60" height="50" rx="4"/>
-            <line x1="30" y1="35" x2="70" y2="35" stroke="currentColor" strokeWidth="1" opacity="0.4"/>
-            <line x1="30" y1="45" x2="70" y2="45" stroke="currentColor" strokeWidth="1" opacity="0.4"/>
-            <line x1="30" y1="55" x2="70" y2="55" stroke="currentColor" strokeWidth="1" opacity="0.4"/>
-            <line x1="30" y1="65" x2="70" y2="65" stroke="currentColor" strokeWidth="1" opacity="0.4"/>
-          </svg>
-        </div>
-        
-        {/* Steering Wheel Cover */}
-        <div className="absolute bottom-20 left-20 opacity-15 animate-pulse delay-2000">
-          <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 100 100">
-            <circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" strokeWidth="8"/>
-            <circle cx="50" cy="50" r="12" fill="currentColor" opacity="0.3"/>
-            <circle cx="35" cy="35" r="3" opacity="0.6"/>
-            <circle cx="65" cy="35" r="3" opacity="0.6"/>
-            <circle cx="35" cy="65" r="3" opacity="0.6"/>
-            <circle cx="65" cy="65" r="3" opacity="0.6"/>
-          </svg>
-        </div>
-      </div>
 
       <div className="container mx-auto px-2 sm:px-4 xl:px-6 2xl:px-8 py-12 sm:py-16 lg:py-20 xl:py-24 relative">
         <div className="text-center max-w-xs sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto">

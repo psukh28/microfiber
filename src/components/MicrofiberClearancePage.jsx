@@ -5,7 +5,7 @@ import FeatureHighlights from './FeatureHighlights.jsx';
 import ManufacturingVideo from './ManufacturingVideo.jsx';
 import ProductGrid from './ProductGrid.jsx';
 import LogisticsSection from './LogisticsSection.jsx';
-import WhyClearanceSection from './WhyClearanceSection.jsx';
+
 import FAQSection from './FAQSection.jsx';
 import RFQForm from './RFQForm.jsx';
 import StickyBottomBar from './StickyBottomBar.jsx';
@@ -57,8 +57,7 @@ function PageContent({ products }) {
         {/* Logistics Section */}
         <LogisticsSection />
 
-        {/* Why Clearance Section */}
-        <WhyClearanceSection />
+
 
         {/* FAQ Section */}
         <FAQSection />
