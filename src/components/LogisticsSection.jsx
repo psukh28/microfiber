@@ -47,10 +47,10 @@ export default function LogisticsSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 id="logistics-heading" className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Order Information TEST
+            Order & Delivery Details
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Everything you need to know about ordering and delivery
+            Clear terms and fast processing for your bulk microfiber orders
           </p>
         </div>
 
