@@ -376,8 +376,11 @@ export default function ProductCard({ product, onRequestQuote }) {
                 {priceDisplay}
               </div>
               {product.unit_price_thb_no_vat && (
-                <div className="text-xs text-gray-500 dark:text-gray-400">per piece</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">
+                  {product.name?.toUpperCase().includes("SET") ? "per set" : "per piece"}
+                </div>
               )}
+           
               <div className="text-xs text-blue-600 dark:text-blue-400 mt-1 font-medium">
                 20ft container minimum
               </div>

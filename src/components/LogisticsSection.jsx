@@ -1,5 +1,15 @@
 const logisticsInfo = [
   {
+    title: "Minimum Order",
+    content: "20ft container minimum",
+    description: "Mix and match any products • Approximately 1,000-1,500 units per container",
+    icon: (
+      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+      </svg>
+    )
+  },
+  {
     title: "Payment Terms",
     content: "30% deposit, 70% before shipment",
     description: "T/T wire transfer • LC available for large orders",
@@ -47,15 +57,15 @@ export default function LogisticsSection() {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 id="logistics-heading" className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Order & Delivery Details
+            Container Export Program
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Clear terms and fast processing for your bulk microfiber orders
+            Streamlined bulk ordering with 20ft container minimums for maximum value
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" role="list" aria-label="Business terms and logistics information">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Container export program details">
             {logisticsInfo.map((item, index) => (
               <div 
                 key={index}

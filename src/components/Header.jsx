@@ -35,13 +35,13 @@ export default function Header() {
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 14H9v-2h2v2zm0-4H9V7h2v6zm6 4h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 14H9v-2h2v2zm0-4H9V7h2v6zm6 4h-2v-2h2v2zm0-4h-2V7h2v6z" />
                 </svg>
               </div>
               <h1 className="text-lg sm:text-xl xl:text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">
-                <a href="#" className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded" aria-label="Driver's Choice - Home">
-                  <span className="hidden sm:inline">Driver's Choice</span>
-                  <span className="sm:hidden">Driver's Choice</span>
+                <a href="#" className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded" aria-label="Microfiber Sale - Home">
+                  <span className="hidden sm:inline">Microfiber Sale</span>
+                  <span className="sm:hidden">Microfiber Sale</span>
                 </a>
               </h1>
             </div>
@@ -65,9 +65,9 @@ export default function Header() {
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-2 lg:space-x-3 xl:space-x-4">
             <DarkModeToggle />
-            <CurrencySwitcher 
-              currency={currency} 
-              onCurrencyChange={changeCurrency} 
+            <CurrencySwitcher
+              currency={currency}
+              onCurrencyChange={changeCurrency}
             />
             <button
               onClick={scrollToRFQ}
@@ -76,7 +76,7 @@ export default function Header() {
             >
               <span className="hidden lg:inline flex items-center gap-2">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M7 4V2C7 1.45 7.45 1 8 1S9 1.55 9 2V4H15V2C15 1.45 15.45 1 16 1S17 1.55 17 2V4H20C21.1 4 22 4.9 22 6V20C22 21.1 21.1 22 20 22H4C2.9 22 2 21.1 2 20V6C2 4.9 2.9 4 4 4H7ZM20 8H4V20H20V8ZM12 17L7 12L8.41 10.59L11 13.17L15.59 8.58L17 10L12 17Z"/>
+                  <path d="M7 4V2C7 1.45 7.45 1 8 1S9 1.55 9 2V4H15V2C15 1.45 15.45 1 16 1S17 1.55 17 2V4H20C21.1 4 22 4.9 22 6V20C22 21.1 21.1 22 20 22H4C2.9 22 2 21.1 2 20V6C2 4.9 2.9 4 4 4H7ZM20 8H4V20H20V8ZM12 17L7 12L8.41 10.59L11 13.17L15.59 8.58L17 10L12 17Z" />
                 </svg>
                 Get Quote
               </span>
@@ -87,9 +87,9 @@ export default function Header() {
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-1 sm:space-x-2">
             <DarkModeToggle />
-            <CurrencySwitcher 
-              currency={currency} 
-              onCurrencyChange={changeCurrency} 
+            <CurrencySwitcher
+              currency={currency}
+              onCurrencyChange={changeCurrency}
             />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -133,7 +133,7 @@ export default function Header() {
               >
                 <span className="flex items-center gap-2">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M7 4V2C7 1.45 7.45 1 8 1S9 1.55 9 2V4H15V2C15 1.45 15.45 1 16 1S17 1.55 17 2V4H20C21.1 4 22 4.9 22 6V20C22 21.1 21.1 22 20 22H4C2.9 22 2 21.1 2 20V6C2 4.9 2.9 4 4 4H7ZM20 8H4V20H20V8ZM12 17L7 12L8.41 10.59L11 13.17L15.59 8.58L17 10L12 17Z"/>
+                    <path d="M7 4V2C7 1.45 7.45 1 8 1S9 1.55 9 2V4H15V2C15 1.45 15.45 1 16 1S17 1.55 17 2V4H20C21.1 4 22 4.9 22 6V20C22 21.1 21.1 22 20 22H4C2.9 22 2 21.1 2 20V6C2 4.9 2.9 4 4 4H7ZM20 8H4V20H20V8ZM12 17L7 12L8.41 10.59L11 13.17L15.59 8.58L17 10L12 17Z" />
                   </svg>
                   Get Clearance Pricing
                 </span>

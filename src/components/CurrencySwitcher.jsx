@@ -1,13 +1,22 @@
 import { useState } from 'react';
+import { useCurrency } from '../contexts/CurrencyContext.jsx';
 
 const CURRENCIES = [
-  { code: 'THB', label: 'Thai Baht', symbol: '฿' },
-  { code: 'USD', label: 'US Dollar', symbol: '$' },
-  { code: 'EUR', label: 'Euro', symbol: '€' }
+  { code: 'THB', label: 'Thai Baht', symbol: '฿', region: 'Thailand' },
+  { code: 'USD', label: 'US Dollar', symbol: '$', region: 'United States' },
+  { code: 'EUR', label: 'Euro', symbol: '€', region: 'Europe' },
+  { code: 'GBP', label: 'British Pound', symbol: '£', region: 'United Kingdom' },
+  { code: 'INR', label: 'Indian Rupee', symbol: '₹', region: 'India' },
+  { code: 'CNY', label: 'Chinese Yuan', symbol: '¥', region: 'China' },
+  { code: 'JPY', label: 'Japanese Yen', symbol: '¥', region: 'Japan' },
+  { code: 'AUD', label: 'Australian Dollar', symbol: 'A$', region: 'Australia' },
+  { code: 'CAD', label: 'Canadian Dollar', symbol: 'C$', region: 'Canada' },
+  { code: 'SGD', label: 'Singapore Dollar', symbol: 'S$', region: 'Singapore' }
 ];
 
 export default function CurrencySwitcher({ currency = 'THB', onCurrencyChange }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { ratesStatus } = useCurrency();
 
   const handleCurrencySelect = (currencyCode) => {
     if (onCurrencyChange) {
@@ -37,6 +46,9 @@ export default function CurrencySwitcher({ currency = 'THB', onCurrencyChange })
       >
         <span className="text-lg" aria-hidden="true">{currentCurrency.symbol}</span>
         <span>{currentCurrency.code}</span>
+        {ratesStatus?.isLive && (
+          <div className="w-2 h-2 bg-green-500 rounded-full" title="Live exchange rates" aria-label="Live exchange rates active"></div>
+        )}
         <svg 
           className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           fill="none" 
@@ -60,7 +72,7 @@ export default function CurrencySwitcher({ currency = 'THB', onCurrencyChange })
           
           {/* Menu */}
           <div 
-            className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-20"
+            className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg z-20 max-h-80 overflow-y-auto"
             role="menu"
             aria-labelledby="currency-button"
             aria-orientation="vertical"
@@ -81,10 +93,10 @@ export default function CurrencySwitcher({ currency = 'THB', onCurrencyChange })
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <span className="text-lg" aria-hidden="true">{curr.symbol}</span>
-                      <div>
+                      <span className="text-lg w-6 text-center" aria-hidden="true">{curr.symbol}</span>
+                      <div className="flex-1">
                         <div className="font-medium">{curr.code}</div>
-                        <div className="text-xs text-gray-500 dark:text-gray-400">{curr.label}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{curr.region}</div>
                       </div>
                     </div>
                     {curr.code === currency && (
