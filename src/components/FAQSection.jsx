@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 const faqs = [
   {
-    question: "What's the minimum order quantity for clearance items?",
-    answer: "Minimum orders start at 1,000 units per SKU, but we offer better pricing for larger quantities. Container loads (20ft/40ft) receive the best rates. Mixed SKU orders are welcome to help you reach minimum quantities."
+    question: "What's the minimum order requirement?",
+    answer: "We require a 20ft container minimum order (approximately 1,000-1,500 units total). You can mix and match any products from our clearance inventory to fill the container. This container-based approach ensures the best possible pricing and shipping efficiency."
   },
   {
     question: "Are these products defective or seconds quality?",
@@ -11,11 +11,15 @@ const faqs = [
   },
   {
     question: "How quickly can you ship, and what are the payment terms?",
-    answer: "Ready stock can ship within 2-5 business days after payment confirmation. Payment terms are 30% deposit with the balance due before shipment via T/T wire transfer. Letter of Credit is available for orders over $50,000 USD."
+    answer: "Container orders ship within 2-5 business days after payment confirmation. Payment terms are 30% deposit with 70% balance due before shipment via T/T wire transfer. Letter of Credit is available for large container orders."
   },
   {
-    question: "Can I get samples before placing a large order?",
-    answer: "Yes, we provide free samples for serious buyers. Sample shipping costs apply, but we'll credit this against your first order. Samples typically ship within 24 hours and help you verify quality before committing to larger quantities."
+    question: "Can I get samples before placing a container order?",
+    answer: "Yes, we provide free samples for serious container buyers. Sample shipping costs apply, but we'll credit this against your first container order. Samples typically ship within 24 hours and help you verify quality before committing to a full container."
+  },
+  {
+    question: "Can I mix different products in one container?",
+    answer: "Absolutely! You can mix and match any products from our clearance inventory to fill your 20ft container. This flexibility allows you to create the perfect product assortment for your market while meeting our container minimum requirement."
   }
 ];
 

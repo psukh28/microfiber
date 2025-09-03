@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { convertAndFormatPrice } from '../utils/currency.js';
-import { safeDisplay, safeJoin } from '../utils/validation.js';
+import { safeDisplay } from '../utils/validation.js';
 import { useCurrency } from '../contexts/CurrencyContext.jsx';
 
 export default function ProductCard({ product, onRequestQuote }) {
@@ -27,7 +27,7 @@ export default function ProductCard({ product, onRequestQuote }) {
 
   const priceDisplay = product.unit_price_thb_no_vat
     ? convertAndFormatPrice(product.unit_price_thb_no_vat, currency)
-    : 'Request bulk quote';
+    : 'Container quote';
 
   // Generate possible image filenames based on your current naming pattern
   const generateImagePaths = (productName) => {
@@ -76,22 +76,34 @@ export default function ProductCard({ product, onRequestQuote }) {
     return images;
   };
 
-  // Check which images actually exist
+  // Check which images actually exist with better performance
   useEffect(() => {
     const checkImages = async () => {
       const possibleImages = generateImagePaths(product.name);
       const existingImages = [];
 
-      for (const imagePath of possibleImages) {
+      // Use Promise.allSettled for better performance
+      const imageChecks = possibleImages.map(async (imagePath) => {
         try {
-          const response = await fetch(imagePath, { method: 'HEAD' });
+          const response = await fetch(imagePath, { 
+            method: 'HEAD',
+            cache: 'force-cache' // Cache the HEAD requests
+          });
           if (response.ok) {
-            existingImages.push(imagePath);
+            return imagePath;
           }
         } catch (error) {
           // Image doesn't exist, skip it
         }
-      }
+        return null;
+      });
+
+      const results = await Promise.allSettled(imageChecks);
+      results.forEach((result) => {
+        if (result.status === 'fulfilled' && result.value) {
+          existingImages.push(result.value);
+        }
+      });
 
       setAvailableImages(existingImages.length > 0 ? existingImages : [possibleImages[0]]);
       setImagesLoaded(true);
@@ -110,19 +122,16 @@ export default function ProductCard({ product, onRequestQuote }) {
 
   return (
     <article className="group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-lg transition-all duration-300 overflow-hidden flex flex-col relative rounded-lg" role="article" aria-labelledby={`product-title-${product.name?.replace(/\s+/g, '-').toLowerCase()}`}>
-      {/* Clearance Badge */}
-      <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded z-10">
-        CLEARANCE
-      </div>
 
-      {/* Product Image Gallery */}
-      <div className="relative aspect-[4/3] bg-gray-50 dark:bg-gray-700 overflow-hidden">
+
+      {/* Product Image Gallery - Clean & Modern Design */}
+      <div className="relative aspect-[4/3] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 overflow-hidden group/image">
         {imagesLoaded && availableImages.length > 0 && !imageError ? (
           <>
             <img
               src={availableImages[currentImageIndex]}
               alt={`${product.name} - ${product.summary || 'Microfiber product'} - ${currentImageIndex + 1} of ${availableImages.length}`}
-              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+              className="w-full h-full object-contain transition-all duration-500 ease-out group-hover:scale-[1.02]"
               onError={() => {
                 if (currentImageIndex === 0) {
                   setImageError(true);
@@ -131,63 +140,86 @@ export default function ProductCard({ product, onRequestQuote }) {
                 }
               }}
               loading="lazy"
+              decoding="async"
+              fetchPriority="high"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              onLoad={() => {
+                // Preload the next image for smoother navigation
+                if (availableImages[currentImageIndex + 1]) {
+                  const nextImg = new Image();
+                  nextImg.src = availableImages[currentImageIndex + 1];
+                }
+              }}
             />
 
             {/* Image Navigation - Only show if multiple images */}
             {availableImages.length > 1 && (
               <>
-                {/* Previous Button */}
+                {/* Navigation Buttons - Larger & Cleaner */}
                 <button
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     prevImage();
                   }}
-                  className="absolute left-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 hover:text-gray-900 rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 focus:opacity-100 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-sm hover:shadow-md backdrop-blur-sm"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-lg flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-all duration-300 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg backdrop-blur-sm border border-white/20 dark:border-gray-700/50"
                   aria-label="Previous image"
                 >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
 
-                {/* Next Button */}
                 <button
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     nextImage();
                   }}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-gray-700 hover:text-gray-900 rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 focus:opacity-100 focus:outline-none focus:ring-1 focus:ring-blue-500 shadow-sm hover:shadow-md backdrop-blur-sm"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 dark:bg-gray-800/90 hover:bg-white dark:hover:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white rounded-lg flex items-center justify-center opacity-0 group-hover/image:opacity-100 transition-all duration-300 focus:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg backdrop-blur-sm border border-white/20 dark:border-gray-700/50"
                   aria-label="Next image"
                 >
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
 
-                {/* Image Indicators - Minimal */}
-                <div className="absolute bottom-0.5 left-1/2 -translate-x-1/2 flex gap-px">
-                  {availableImages.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        setCurrentImageIndex(index);
-                      }}
-                      className={`w-0.2 h-0.2 rounded-full cursor-pointer transition-opacity duration-200 ${index === currentImageIndex
-                        ? 'bg-gray-800 opacity-90'
-                        : 'bg-gray-600 opacity-50 hover:opacity-70'
-                        }`}
-                      aria-label={`Go to image ${index + 1}`}
-                    />
-                  ))}
+                {/* Clean Image Counter */}
+                <div className="absolute top-3 right-3 bg-white/95 dark:bg-gray-800/95 text-gray-700 dark:text-gray-300 text-xs px-2 py-1 rounded-md font-medium shadow-sm backdrop-blur-sm border border-white/30 dark:border-gray-700/50">
+                  {currentImageIndex + 1} / {availableImages.length}
                 </div>
 
-                {/* Image Counter - Minimal */}
-                <div className="absolute top-1.5 right-1.5 bg-black/40 text-white text-xs px-1.5 py-0.5 rounded text-[10px] font-medium backdrop-blur-sm">
-                  {currentImageIndex + 1}/{availableImages.length}
+                {/* Thumbnail Strip - Always show for multiple images */}
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover/image:opacity-100 transition-opacity duration-300">
+                  <div className={`flex gap-1 ${availableImages.length > 6 ? 'max-w-[200px] overflow-x-auto scrollbar-hide' : ''}`}>
+                    {availableImages.map((image, index) => (
+                      <button
+                        key={index}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setCurrentImageIndex(index);
+                        }}
+                        className={`${
+                          availableImages.length > 6 ? 'w-8 h-6' : 'w-12 h-8'
+                        } rounded border-2 overflow-hidden transition-all duration-200 flex-shrink-0 ${
+                          index === currentImageIndex
+                            ? 'border-blue-500 shadow-md scale-110'
+                            : 'border-white/60 dark:border-gray-600/60 hover:border-blue-300 dark:hover:border-blue-400 hover:scale-105'
+                        }`}
+                        aria-label={`Go to image ${index + 1}`}
+                      >
+                        <img
+                          src={image}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                          sizes="48px"
+                        />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </>
             )}
@@ -195,10 +227,12 @@ export default function ProductCard({ product, onRequestQuote }) {
         ) : (
           <div className="flex items-center justify-center h-full text-gray-400 dark:text-gray-500" role="img" aria-label={`Product placeholder for ${product.name}`}>
             <div className="text-center">
-              <svg className="w-20 h-20 mx-auto mb-3 opacity-50" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
-              </svg>
-              <span className="text-sm font-medium">Product Photo</span>
+              <div className="w-16 h-16 mx-auto mb-3 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+                <svg className="w-8 h-8 opacity-60" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fillRule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Product Image</span>
             </div>
           </div>
         )}
@@ -213,20 +247,74 @@ export default function ProductCard({ product, onRequestQuote }) {
           </h3>
         </div>
 
-        {/* Quick Specs */}
-        <div className="mb-4 bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-600 p-3 border-l-4 border-blue-500 shadow-sm">
-          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs font-mono">
-            {product.size && <div><span className="text-gray-500">SIZE:</span> <span className="font-bold">{product.size.split('\n')[0]}</span></div>}
-            {product.gsm && <div><span className="text-gray-500">GSM:</span> <span className="font-bold">{product.gsm}</span></div>}
-            {product.fabric && <div className="col-span-2"><span className="text-gray-500">MATERIAL:</span> <span className="font-bold">{product.fabric}</span></div>}
-          </div>
-          <div className="mt-2 text-xs text-gray-600 dark:text-gray-300 italic">
+        {/* Product Summary */}
+        <div className="mb-3">
+          <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
             {product.summary}
+          </p>
+        </div>
+
+        {/* Product Specifications */}
+        <div className="mb-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg p-4 shadow-sm">
+          <h4 className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-3 flex items-center gap-2">
+            <svg className="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/>
+            </svg>
+            Specifications
+          </h4>
+          <div className="space-y-2">
+            {product.size && (
+              <div className="flex justify-between items-center py-1">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Size</span>
+                <span className="text-sm font-semibold text-gray-900 dark:text-white font-mono">
+                  {product.size.split('\n')[0].split('(')[0].trim()}
+                </span>
+              </div>
+            )}
+            {product.gsm && (
+              <div className="flex justify-between items-center py-1 border-t border-gray-100 dark:border-gray-700">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Weight</span>
+                <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                  {product.gsm} GSM
+                </span>
+              </div>
+            )}
+            {product.fabric && (
+              <div className="flex justify-between items-start py-1 border-t border-gray-100 dark:border-gray-700">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Material</span>
+                <span className="text-sm font-semibold text-gray-900 dark:text-white text-right max-w-[60%]">
+                  {product.fabric}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Shipping & Packaging Details */}
-        {(product.colors?.length > 0 || product.packing || product.carton_dimensions) && (
+        {/* Available Colors */}
+        {product.colors && product.colors.length > 0 && (
+          <div className="mb-4">
+            <h4 className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide mb-2 flex items-center gap-2">
+              <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+              </svg>
+              Available Colors
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {product.colors.map((color, index) => (
+                <span 
+                  key={index} 
+                  className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-600"
+                >
+                  <div className="w-2 h-2 rounded-full bg-current mr-2 opacity-60"></div>
+                  {color}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Packaging Details - Collapsible */}
+        {(product.packing || product.carton_dimensions) && (
           <div className="mb-4">
             <button
               onClick={(e) => {
@@ -234,15 +322,15 @@ export default function ProductCard({ product, onRequestQuote }) {
                 e.stopPropagation();
                 setShowDetails(!showDetails);
               }}
-              className="flex items-center justify-between w-full text-left text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded p-2 -m-2 bg-blue-50 dark:bg-blue-900/20"
+              className="flex items-center justify-between w-full text-left text-xs font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded p-2 -m-2 hover:bg-gray-50 dark:hover:bg-gray-700/50"
               aria-expanded={showDetails}
               aria-controls={`details-${cardId}`}
             >
-              <span className="flex items-center gap-2">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z" />
+              <span className="flex items-center gap-2 uppercase tracking-wide">
+                <svg className="w-4 h-4 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
                 </svg>
-                SHIPPING & VARIANTS
+                Packaging Details
               </span>
               <svg
                 className={`w-4 h-4 transition-transform duration-200 ${showDetails ? 'rotate-180' : ''}`}
@@ -258,48 +346,18 @@ export default function ProductCard({ product, onRequestQuote }) {
             {showDetails && (
               <div
                 id={`details-${cardId}`}
-                className="mt-3 space-y-3 text-sm animate-in slide-in-from-top-2 duration-200"
+                className="mt-3 bg-gray-50 dark:bg-gray-800 rounded-lg p-3 border border-gray-200 dark:border-gray-600 animate-in slide-in-from-top-2 duration-200"
               >
-                {/* Color Variants */}
-                {product.colors && product.colors.length > 0 && (
-                  <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-3 border border-blue-200 dark:border-blue-700">
-                    <h4 className="font-semibold text-blue-800 dark:text-blue-200 text-xs uppercase tracking-wide mb-2 flex items-center gap-1">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.94-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-                      </svg>
-                      Available Colors
-                    </h4>
-                    <div className="flex flex-wrap gap-1">
-                      {product.colors.map((color, index) => (
-                        <span key={index} className="bg-white dark:bg-gray-800 text-blue-800 dark:text-blue-200 px-2 py-1 rounded text-xs font-medium border border-blue-200 dark:border-blue-600">
-                          {color}
-                        </span>
-                      ))}
-                    </div>
+                {product.packing && (
+                  <div className="mb-2 last:mb-0">
+                    <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Packaging: </span>
+                    <span className="text-xs text-gray-800 dark:text-gray-200">{safeDisplay(product.packing)}</span>
                   </div>
                 )}
-
-                {/* Packaging Information */}
-                {(product.packing || product.carton_dimensions) && (
-                  <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-3 border border-orange-200 dark:border-orange-700">
-                    <h4 className="font-semibold text-orange-800 dark:text-orange-200 text-xs uppercase tracking-wide mb-2 flex items-center gap-1">
-                      <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                      Packaging Details
-                    </h4>
-                    {product.packing && (
-                      <div className="mb-1">
-                        <span className="text-orange-700 dark:text-orange-300 text-xs font-medium">Pack: </span>
-                        <span className="text-orange-900 dark:text-orange-100 text-xs">{safeDisplay(product.packing)}</span>
-                      </div>
-                    )}
-                    {product.carton_dimensions && (
-                      <div>
-                        <span className="text-orange-700 dark:text-orange-300 text-xs font-medium">Carton: </span>
-                        <span className="text-orange-900 dark:text-orange-100 text-xs">{safeDisplay(product.carton_dimensions)}</span>
-                      </div>
-                    )}
+                {product.carton_dimensions && (
+                  <div className="mb-2 last:mb-0">
+                    <span className="text-xs font-medium text-gray-600 dark:text-gray-400">Carton Size: </span>
+                    <span className="text-xs text-gray-800 dark:text-gray-200">{safeDisplay(product.carton_dimensions)}</span>
                   </div>
                 )}
               </div>
@@ -307,59 +365,48 @@ export default function ProductCard({ product, onRequestQuote }) {
           </div>
         )}
 
-        {/* Warehouse Pricing Section */}
-        <div className="border-t-2 border-blue-200 dark:border-blue-600 pt-4 mt-auto bg-gradient-to-r from-gray-50 to-blue-50 dark:from-gray-700 dark:to-blue-900/20 -mx-4 -mb-4 px-4 pb-4 relative overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-5" aria-hidden="true">
-            <div className="absolute inset-0" style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M0 0h20v20H0V0zm10 10h10v10H10V10z'/%3E%3C/g%3E%3C/svg%3E")`,
-            }} />
-          </div>
-
-          <div className="relative">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex-1">
-                <div className="text-xs text-gray-500 dark:text-gray-400 font-mono mb-1 flex items-center gap-1">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M7 4V2C7 1.45 7.45 1 8 1S9 1.55 9 2V4H15V2C15 1.45 15.45 1 16 1S17 1.55 17 2V4H20C21.1 4 22 4.9 22 6V20C22 21.1 21.1 22 20 22H4C2.9 22 2 21.1 2 20V6C2 4.9 2.9 4 4 4H7Z" />
-                  </svg>
-                  PRICE (EX VAT)
-                </div>
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1" aria-label={`Price: ${priceDisplay}`}>
-                  {priceDisplay}
-                </div>
-                {product.unit_price_thb_no_vat && (
-                  <div className="text-xs text-gray-500 dark:text-gray-400">per unit</div>
-                )}
+        {/* Pricing and Action Section */}
+        <div className="border-t border-gray-200 dark:border-gray-600 pt-4 mt-auto">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex-1">
+              <div className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
+                Unit Price (Ex VAT)
               </div>
-
-              <div className="text-right bg-green-100 dark:bg-green-900/30 px-3 py-2 rounded-lg border border-green-200 dark:border-green-700">
-                <div className="text-xs text-green-700 dark:text-green-300 mb-1 font-semibold">STOCK STATUS</div>
-                <div className="text-sm font-bold text-green-600 dark:text-green-400 flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  READY TO SHIP
-                </div>
+              <div className="text-xl font-bold text-gray-900 dark:text-white" aria-label={`Price: ${priceDisplay}`}>
+                {priceDisplay}
+              </div>
+              {product.unit_price_thb_no_vat && (
+                <div className="text-xs text-gray-500 dark:text-gray-400">per piece</div>
+              )}
+              <div className="text-xs text-blue-600 dark:text-blue-400 mt-1 font-medium">
+                20ft container minimum
               </div>
             </div>
 
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleRequestQuote();
-              }}
-              className="w-full bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 hover:from-blue-700 hover:via-blue-800 hover:to-blue-900 focus-visible:from-blue-700 focus-visible:via-blue-800 focus-visible:to-blue-900 text-white px-4 py-3 font-bold text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 shadow-lg hover:shadow-xl transform hover:scale-[1.02] focus-visible:scale-[1.02] min-h-[48px] flex items-center justify-center gap-2 uppercase tracking-wide border-2 border-blue-800 dark:border-blue-500 relative overflow-hidden"
-              aria-label={`Request bulk quote for ${product.name}`}
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-              <svg className="w-4 h-4 relative z-10" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z" />
-              </svg>
-              <span className="relative z-10">REQUEST BULK QUOTE</span>
-            </button>
+            <div className="text-right">
+              <div className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-700">
+                <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                In Stock
+              </div>
+            </div>
           </div>
+
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleRequestQuote();
+            }}
+            className="w-full bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 text-white px-4 py-3 font-semibold text-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 shadow-sm hover:shadow-md min-h-[48px] flex items-center justify-center gap-2 rounded-lg border border-blue-700 dark:border-blue-500"
+            aria-label={`Add ${product.name} to 20ft container quote`}
+          >
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17M17 13v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01"/>
+            </svg>
+            Add to Container Quote
+          </button>
         </div>
       </div>
     </article>

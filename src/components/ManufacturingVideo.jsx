@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
 export default function ManufacturingVideo() {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
 
-  const videoId = 'mpX4w7LjzLo'; // Extracted from the YouTube URL
-  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+  const videoId = 'mpX4w7LjzLo';
+  // Use higher quality thumbnail for faster loading
+  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
   const handlePlayVideo = () => {
     setShowVideo(true);
@@ -35,50 +35,50 @@ export default function ManufacturingVideo() {
           <div className="relative bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
             <div className="aspect-video relative">
               {!showVideo ? (
-                /* Video Thumbnail with Play Button */
-                <div className="relative w-full h-full group cursor-pointer" onClick={handlePlayVideo}>
+                /* Video Thumbnail with Play Button - Always Visible */
+                <div className="relative w-full h-full cursor-pointer" onClick={handlePlayVideo}>
                   <img
                     src={thumbnailUrl}
                     alt="Manufacturing process of microfiber cleaning towels"
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    onLoad={() => setIsLoaded(true)}
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                    decoding="async"
                   />
 
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors duration-300" />
+                  {/* Always visible overlay */}
+                  <div className="absolute inset-0 bg-black/30" />
 
-                  {/* Play Button */}
+                  {/* Always visible Play Button */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="bg-red-600 hover:bg-red-700 text-white rounded-full p-6 shadow-2xl transform group-hover:scale-110 transition-all duration-300">
+                    <div className="bg-red-600 hover:bg-red-700 active:bg-red-800 text-white rounded-full p-6 shadow-2xl hover:scale-110 active:scale-95 transition-all duration-200">
                       <svg className="w-8 h-8 ml-1" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M8 5v14l11-7z" />
                       </svg>
                     </div>
                   </div>
 
-                  {/* YouTube Badge */}
-                  <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded text-sm font-semibold flex items-center gap-1">
+                  {/* YouTube Badge - Always visible */}
+                  <div className="absolute top-4 right-4 bg-red-600 text-white px-3 py-1 rounded text-sm font-semibold flex items-center gap-1 shadow-lg">
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
                     </svg>
                     YouTube
                   </div>
 
-                  {/* Loading State */}
-                  {!isLoaded && (
-                    <div className="absolute inset-0 bg-gray-200 dark:bg-gray-700 animate-pulse flex items-center justify-center">
-                      <div className="text-gray-500 dark:text-gray-400">Loading video...</div>
-                    </div>
-                  )}
+                  {/* Click to play text */}
+                  <div className="absolute bottom-4 left-4 bg-black/70 text-white px-3 py-1 rounded text-sm font-medium">
+                    Click to play video
+                  </div>
                 </div>
               ) : (
-                /* Embedded YouTube Video */
+                /* Embedded YouTube Video - Optimized */
                 <iframe
-                  src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`}
+                  src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
                   title="Microfiber Manufacturing Process - Driver's Choice"
                   className="w-full h-full border-0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
+                  loading="lazy"
                 />
               )}
             </div>

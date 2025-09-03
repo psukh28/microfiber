@@ -43,9 +43,15 @@ function PageContent({ products }) {
               <h2 id="products-heading" className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
                 Available Clearance Products
               </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
+              <p className="text-lg text-gray-600 dark:text-gray-300 mb-2">
                 Proven microfiber essentials, ready for immediate export at unbeatable clearance prices
               </p>
+              <div className="inline-flex items-center gap-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 px-4 py-2 rounded-full text-sm font-semibold">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
+                </svg>
+                20ft Container Minimum • Mix & Match Any Products
+              </div>
             </div>
             <ProductGrid 
               products={products} 
