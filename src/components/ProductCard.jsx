@@ -10,6 +10,7 @@ export default function ProductCard({ product, onRequestQuote }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [availableImages, setAvailableImages] = useState([]);
   const [imagesLoaded, setImagesLoaded] = useState(false);
+  const [imageVersion, setImageVersion] = useState(0);
   const { currency } = useCurrency();
   const { t } = useLanguage();
 
@@ -89,7 +90,7 @@ export default function ProductCard({ product, onRequestQuote }) {
         try {
           const response = await fetch(imagePath, { 
             method: 'HEAD',
-            cache: 'force-cache' // Cache the HEAD requests
+            cache: 'no-cache' // Don't cache to allow image updates
           });
           if (response.ok) {
             return imagePath;
@@ -109,6 +110,8 @@ export default function ProductCard({ product, onRequestQuote }) {
 
       setAvailableImages(existingImages.length > 0 ? existingImages : [possibleImages[0]]);
       setImagesLoaded(true);
+      // Increment image version to force cache refresh
+      setImageVersion(prev => prev + 1);
     };
 
     checkImages();
@@ -131,7 +134,7 @@ export default function ProductCard({ product, onRequestQuote }) {
         {imagesLoaded && availableImages.length > 0 && !imageError ? (
           <>
             <img
-              src={availableImages[currentImageIndex]}
+              src={`${availableImages[currentImageIndex]}?v=${imageVersion}`}
               alt={`${product.name} - ${product.summary || 'Microfiber product'} - ${currentImageIndex + 1} of ${availableImages.length}`}
               className="w-full h-full object-contain transition-all duration-500 ease-out group-hover:scale-[1.02]"
               onError={() => {
@@ -149,7 +152,7 @@ export default function ProductCard({ product, onRequestQuote }) {
                 // Preload the next image for smoother navigation
                 if (availableImages[currentImageIndex + 1]) {
                   const nextImg = new Image();
-                  nextImg.src = availableImages[currentImageIndex + 1];
+                  nextImg.src = `${availableImages[currentImageIndex + 1]}?v=${imageVersion}`;
                 }
               }}
             />
@@ -212,7 +215,7 @@ export default function ProductCard({ product, onRequestQuote }) {
                         aria-label={`Go to image ${index + 1}`}
                       >
                         <img
-                          src={image}
+                          src={`${image}?v=${imageVersion}`}
                           alt={`Thumbnail ${index + 1}`}
                           className="w-full h-full object-cover"
                           loading="lazy"
