@@ -1,0 +1,134 @@
+{
+  "navigation": {
+    "products": "Products",
+    "logistics": "Logistics",
+    "rfq": "RFQ",
+    "faq": "FAQ"
+  },
+  "header": {
+    "brand": "Microfiber Sale",
+    "getQuote": "Get Quote",
+    "getClearancePricing": "Get Clearance Pricing",
+    "skipToMain": "Skip to main content"
+  },
+  "hero": {
+    "title": "Microfiber Stock",
+    "subtitle": "Clearance Sale",
+    "description": "Practical cleaning solutions for automotive detailing & household use.",
+    "cta": "View Products",
+    "features": {
+      "bulk": "Bulk quantities available",
+      "export": "Export ready",
+      "quality": "Premium quality"
+    }
+  },
+  "features": {
+    "title": "Why Choose Our Clearance Products",
+    "description": "Take advantage of this unique opportunity to secure durable, versatile microfiber goods for everyday cleaning and automotive use at unprecedented prices.",
+    "items": [
+      {
+        "title": "Export Ready",
+        "description": "All products meet international export standards with proper documentation"
+      },
+      {
+        "title": "Bulk Pricing",
+        "description": "Competitive clearance prices for large quantity orders"
+      },
+      {
+        "title": "Quality Assured",
+        "description": "Premium microfiber materials with proven performance"
+      },
+      {
+        "title": "Fast Shipping",
+        "description": "Quick processing and worldwide shipping capabilities"
+      }
+    ]
+  },
+  "products": {
+    "title": "Available Clearance Products",
+    "subtitle": "Proven microfiber essentials, ready for immediate export at unbeatable clearance prices",
+    "containerInfo": "20ft Container Minimum • Mix & Match Any Products",
+    "requestQuote": "Request Quote",
+    "viewDetails": "View Details",
+    "specifications": {
+      "title": "Specifications",
+      "size": "Size",
+      "fabric": "Fabric",
+      "gsm": "GSM",
+      "colors": "Colors",
+      "packing": "Packing",
+      "cartonDimensions": "Carton Dimensions",
+      "cbm": "CBM",
+      "unitPrice": "Unit Price (THB, No VAT)"
+    },
+    "availableColors": "Available Colors",
+    "packagingDetails": "Packaging Details",
+    "unitPrice": "Unit Price (Ex VAT)",
+    "perSet": "per set",
+    "perPiece": "per piece",
+    "containerMinimum": "20ft container minimum",
+    "inStock": "In Stock",
+    "addToContainer": "Add to Container Quote"
+  },
+  "logistics": {
+    "title": "Logistics & Shipping",
+    "description": "We handle all aspects of international shipping and logistics to ensure your products arrive safely and on time.",
+    "features": [
+      "Worldwide shipping",
+      "Customs documentation",
+      "Container loading",
+      "Tracking support"
+    ]
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "What is the minimum order quantity?",
+        "answer": "We require a minimum of one 20ft container, but you can mix and match any products to fill the container."
+      },
+      {
+        "question": "Are the products export ready?",
+        "answer": "Yes, all products come with proper export documentation and meet international standards."
+      },
+      {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept various payment methods including bank transfers, letters of credit, and other secure payment options."
+      },
+      {
+        "question": "How long does shipping take?",
+        "answer": "Shipping times vary by destination, typically 2-4 weeks for most international locations."
+      }
+    ]
+  },
+  "rfq": {
+    "title": "Request a Quote",
+    "subtitle": "Get pricing for your specific requirements",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "company": "Company Name",
+      "phone": "Phone Number",
+      "country": "Country",
+      "message": "Additional Requirements",
+      "submit": "Submit Quote Request",
+      "success": "Thank you! We'll get back to you within 24 hours.",
+      "error": "Please fill in all required fields."
+    }
+  },
+  "footer": {
+    "description": "Premium microfiber products at clearance prices. Ready for export worldwide.",
+    "quickLinks": "Quick Links",
+    "contact": "Contact",
+    "rights": "All rights reserved."
+  },
+  "stickyBar": {
+    "text": "Ready to place your order?",
+    "button": "Get Quote Now"
+  },
+  "currency": {
+    "thb": "THB",
+    "usd": "USD",
+    "eur": "EUR"
+  }
+}

@@ -1,7 +1,9 @@
 import ProductCard from './ProductCard.jsx';
 import { validateProduct } from '../utils/validation.js';
+import { useLanguage } from '../contexts/LanguageContext.jsx';
 
 export default function ProductGrid({ products = [], onRequestQuote }) {
+  const { t } = useLanguage();
   // Handle empty states
   if (!Array.isArray(products) || products.length === 0) {
     return (

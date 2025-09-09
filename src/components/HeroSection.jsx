@@ -1,4 +1,8 @@
+import { useLanguage } from '../contexts/LanguageContext.jsx';
+
 export default function HeroSection() {
+  const { t } = useLanguage();
+
   const scrollToRFQ = () => {
     const element = document.querySelector('#rfq-form');
     if (element) {
@@ -28,15 +32,15 @@ export default function HeroSection() {
         <div className="text-center max-w-xs sm:max-w-2xl lg:max-w-4xl xl:max-w-5xl mx-auto">
           {/* Main Heading */}
           <h1 id="hero-heading" className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
-            <span className="block">Microfiber Stock</span>
-            <span className="block text-yellow-300">Clearance Sale</span>
+            <span className="block">{t('hero.title')}</span>
+            <span className="block text-yellow-300">{t('hero.subtitle')}</span>
           </h1>
           
           {/* Subheading */}
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-6 sm:mb-8 opacity-90 leading-relaxed px-2 sm:px-0">
-            Practical cleaning solutions for automotive detailing & household use.
+            {t('hero.description')}
             <br className="hidden sm:block" />
-            <span className="text-yellow-200 font-semibold">Unbeatable bulk pricing • 1M+ units in stock • Ready to ship</span>
+            <span className="text-yellow-200 font-semibold">{t('hero.features.bulk')} • {t('hero.features.export')} • {t('hero.features.quality')}</span>
           </p>
 
           {/* Product Categories */}
@@ -69,12 +73,12 @@ export default function HeroSection() {
             <button
               onClick={scrollToRFQ}
               className="w-full sm:w-auto bg-yellow-400 text-blue-900 px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-yellow-300 focus-visible:bg-yellow-300 transition-all duration-200 transform hover:scale-105 focus-visible:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-300/50 shadow-xl min-h-[48px] sm:min-h-[56px] flex items-center justify-center gap-2"
-              aria-label="Get clearance pricing - navigate to quote request form"
+              aria-label={`${t('header.getClearancePricing')} - navigate to quote request form`}
             >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M7 4V2C7 1.45 7.45 1 8 1S9 1.55 9 2V4H15V2C15 1.45 15.45 1 16 1S17 1.55 17 2V4H20C21.1 4 22 4.9 22 6V20C22 21.1 21.1 22 20 22H4C2.9 22 2 21.1 2 20V6C2 4.9 2.9 4 4 4H7ZM20 8H4V20H20V8ZM12 17L7 12L8.41 10.59L11 13.17L15.59 8.58L17 10L12 17Z"/>
               </svg>
-              Get Bulk Quote Now
+              {t('hero.cta')}
             </button>
             <button
               onClick={downloadCatalog}

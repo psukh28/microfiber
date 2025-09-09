@@ -1,18 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CurrencySwitcher from './CurrencySwitcher.jsx';
 import DarkModeToggle from './DarkModeToggle.jsx';
+import LanguageSwitcher from './LanguageSwitcher.jsx';
 import { useCurrency } from '../contexts/CurrencyContext.jsx';
-
-const navigation = [
-  { name: 'Products', href: '#products' },
-  { name: 'Logistics', href: '#logistics' },
-  { name: 'RFQ', href: '#rfq-form' },
-  { name: 'FAQ', href: '#faq' }
-];
+import { useLanguage } from '../contexts/LanguageContext.jsx';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { currency, changeCurrency } = useCurrency();
+  const { t, forceUpdate } = useLanguage();
+
+  const navigation = [
+    { name: t('navigation.products'), href: '#products' },
+    { name: t('navigation.logistics'), href: '#logistics' },
+    { name: t('navigation.rfq'), href: '#rfq-form' },
+    { name: t('navigation.faq'), href: '#faq' }
+  ];
+
+  // Force re-render when language changes
+  useEffect(() => {
+    // This will trigger a re-render when forceUpdate changes
+  }, [forceUpdate]);
 
   const scrollToSection = (href) => {
     const element = document.querySelector(href);
@@ -39,9 +47,9 @@ export default function Header() {
                 </svg>
               </div>
               <h1 className="text-lg sm:text-xl xl:text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-400 dark:to-blue-600 bg-clip-text text-transparent">
-                <a href="#" className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded" aria-label="Microfiber Sale - Home">
-                  <span className="hidden sm:inline">Microfiber Sale</span>
-                  <span className="sm:hidden">Microfiber Sale</span>
+                <a href="#" className="focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 rounded" aria-label={`${t('header.brand')} - Home`}>
+                  <span className="hidden sm:inline">{t('header.brand')}</span>
+                  <span className="sm:hidden">{t('header.brand')}</span>
                 </a>
               </h1>
             </div>
@@ -64,6 +72,7 @@ export default function Header() {
 
           {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-2 lg:space-x-3 xl:space-x-4">
+            <LanguageSwitcher />
             <DarkModeToggle />
             <CurrencySwitcher
               currency={currency}
@@ -72,20 +81,21 @@ export default function Header() {
             <button
               onClick={scrollToRFQ}
               className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus-visible:from-blue-700 focus-visible:to-blue-800 text-white px-4 lg:px-5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 min-h-[44px] shadow-lg hover:shadow-xl transform hover:scale-105 focus-visible:scale-105"
-              aria-label="Get clearance pricing - navigate to quote form"
+              aria-label={`${t('header.getClearancePricing')} - navigate to quote form`}
             >
               <span className="hidden lg:inline flex items-center gap-2">
                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path d="M7 4V2C7 1.45 7.45 1 8 1S9 1.55 9 2V4H15V2C15 1.45 15.45 1 16 1S17 1.55 17 2V4H20C21.1 4 22 4.9 22 6V20C22 21.1 21.1 22 20 22H4C2.9 22 2 21.1 2 20V6C2 4.9 2.9 4 4 4H7ZM20 8H4V20H20V8ZM12 17L7 12L8.41 10.59L11 13.17L15.59 8.58L17 10L12 17Z" />
                 </svg>
-                Get Quote
+                {t('header.getQuote')}
               </span>
-              <span className="lg:hidden">Quote</span>
+              <span className="lg:hidden">{t('header.getQuote')}</span>
             </button>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center space-x-1 sm:space-x-2">
+            <LanguageSwitcher />
             <DarkModeToggle />
             <CurrencySwitcher
               currency={currency}
@@ -129,13 +139,13 @@ export default function Header() {
               <button
                 onClick={scrollToRFQ}
                 className="block w-full text-left mt-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 focus-visible:from-blue-700 focus-visible:to-blue-800 text-white px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-inset min-h-[44px] shadow-lg"
-                aria-label="Get clearance pricing - navigate to quote form"
+                aria-label={`${t('header.getClearancePricing')} - navigate to quote form`}
               >
                 <span className="flex items-center gap-2">
                   <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M7 4V2C7 1.45 7.45 1 8 1S9 1.55 9 2V4H15V2C15 1.45 15.45 1 16 1S17 1.55 17 2V4H20C21.1 4 22 4.9 22 6V20C22 21.1 21.1 22 20 22H4C2.9 22 2 21.1 2 20V6C2 4.9 2.9 4 4 4H7ZM20 8H4V20H20V8ZM12 17L7 12L8.41 10.59L11 13.17L15.59 8.58L17 10L12 17Z" />
                   </svg>
-                  Get Clearance Pricing
+                  {t('header.getClearancePricing')}
                 </span>
               </button>
             </div>
