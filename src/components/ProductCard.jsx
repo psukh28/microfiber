@@ -62,19 +62,22 @@ export default function ProductCard({ product, onRequestQuote }) {
     }
 
     // Add common variations with hyphen separator
-    images.push(`/images/products/${baseName}-bulk.jpg`);
-    images.push(`/images/products/${baseName}-strip.jpg`);
-    images.push(`/images/products/${baseName}-multi.jpg`);
+    const commonVariations = [
+      'bulk', 'strip', 'multi', 'back', 'fold', 'close', 
+      'multistrip', 'multiple', 'blackvelour', 'front', 'side',
+      'open', 'closed', 'detail', 'texture', 'pattern'
+    ];
+    
+    commonVariations.forEach(variation => {
+      images.push(`/images/products/${baseName}-${variation}.jpg`);
+    });
 
     // Also try variations without "SET"
     if (baseNameWithoutSet !== baseName) {
-      images.push(`/images/products/${baseNameWithoutSet}-bulk.jpg`);
-      images.push(`/images/products/${baseNameWithoutSet}-strip.jpg`);
-      images.push(`/images/products/${baseNameWithoutSet}-multi.jpg`);
+      commonVariations.forEach(variation => {
+        images.push(`/images/products/${baseNameWithoutSet}-${variation}.jpg`);
+      });
     }
-    images.push(`/images/products/${baseName}-multistrip.jpg`);
-    images.push(`/images/products/${baseName}-multiple.jpg`);
-    images.push(`/images/products/${baseName}-blackvelour.jpg`);
 
     return images;
   };
@@ -83,6 +86,8 @@ export default function ProductCard({ product, onRequestQuote }) {
   useEffect(() => {
     const checkImages = async () => {
       const possibleImages = generateImagePaths(product.name);
+      console.log(`Checking images for product: ${product.name}`);
+      console.log('Possible image paths:', possibleImages);
       const existingImages = [];
 
       // Use Promise.allSettled for better performance
@@ -109,6 +114,7 @@ export default function ProductCard({ product, onRequestQuote }) {
       });
 
       setAvailableImages(existingImages.length > 0 ? existingImages : [possibleImages[0]]);
+      console.log('Found existing images:', existingImages);
       setImagesLoaded(true);
       // Increment image version to force cache refresh
       setImageVersion(prev => prev + 1);
